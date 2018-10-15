@@ -1,0 +1,41 @@
+\documentclass{beamer}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usetheme{metropolis}
+
+
+\title{STA 426: Diffusion maps for high-dimensional single-cell analysis of differentiation data}
+\author{Giuachin Kreiliger, Samuel Pawel}
+\date{19.11.2018}
+
+\begin{document}
+
+<<setup, include=FALSE>>=
+library(knitr)
+opts_chunk$set(fig.align = "center",
+               message = FALSE,
+               warning = FALSE,
+               size='tiny')
+@
+
+\maketitle
+
+\section{\texttt{R} code}
+\begin{frame}[fragile]{Missing Data}
+<< fig.width = 10, fig.height = 7, dpi = 1000, echo = FALSE >>=
+library(ggplot2)
+ggplot(iris, aes(Sepal.Width, Petal.Width, color = Species)) + 
+  geom_point()
+@
+\end{frame}
+
+
+\section{Math}
+\begin{frame}[fragile]{Age Distribution}
+\begin{align*}
+  \exp(i\theta) = \cos(\theta) + i \sin(\theta)
+\end{align*}
+\end{frame}
+
+
+\end{document}
