@@ -1,0 +1,6 @@
+\section{Math}
+\begin{frame}[fragile]{Age Distribution}
+\begin{align*}
+  \exp(i\theta) = \cos(\theta) + i \sin(\theta)
+\end{align*}
+\end{frame}

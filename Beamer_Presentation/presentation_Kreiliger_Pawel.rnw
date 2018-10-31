@@ -20,22 +20,14 @@ opts_chunk$set(fig.align = "center",
 
 \maketitle
 
-\section{\texttt{R} code}
-\begin{frame}[fragile]{Missing Data}
-<< fig.width = 10, fig.height = 7, dpi = 1000, echo = FALSE >>=
-library(ggplot2)
-ggplot(iris, aes(Sepal.Width, Petal.Width, color = Species)) + 
-  geom_point()
+
+% First Part %
+<< partA, child = 'partA.rnw' >>=
 @
-\end{frame}
 
-
-\section{Math}
-\begin{frame}[fragile]{Age Distribution}
-\begin{align*}
-  \exp(i\theta) = \cos(\theta) + i \sin(\theta)
-\end{align*}
-\end{frame}
+% Second Part %
+<< partB, child = 'partB.rnw' >>=
+@
 
 
 \end{document}
