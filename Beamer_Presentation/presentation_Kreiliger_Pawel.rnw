@@ -1,8 +1,10 @@
 \documentclass{beamer}
 \usepackage{graphicx}
 \usepackage{amsmath}
+\usepackage[utf8]{inputenc}
+\usepackage{natbib}
+\renewcommand{\bibsection}{}
 \usetheme{metropolis}
-
 
 \title{STA 426: Diffusion maps for high-dimensional single-cell analysis of differentiation data}
 \author{Giuachin Kreiliger, Samuel Pawel}
@@ -15,6 +17,7 @@ library(knitr)
 opts_chunk$set(fig.align = "center",
                message = FALSE,
                warning = FALSE,
+               cache = TRUE,
                size='tiny')
 @
 
@@ -28,6 +31,13 @@ opts_chunk$set(fig.align = "center",
 % Second Part %
 << partB, child = 'partB.rnw' >>=
 @
+
+% References %
+\begin{frame}{References}
+  \bibliographystyle{apa}
+  \nocite{*}
+  \bibliography{biblio.bib}
+\end{frame}
 
 
 \end{document}

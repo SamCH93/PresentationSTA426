@@ -1,8 +1,8 @@
-\section{\texttt{R} code}
-\begin{frame}[fragile]{Missing Data}
-<< fig.width = 10, fig.height = 7, dpi = 1000, echo = FALSE >>=
-library(ggplot2)
-ggplot(iris, aes(Sepal.Width, Petal.Width, color = Species)) + 
-  geom_point()
-@
-\end{frame}
+% Introduction %
+\section{Introduction}
+
+
+
+% Technical Details %
+\section{Technical Details}
+

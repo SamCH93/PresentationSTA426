@@ -1,6 +1,20 @@
-\section{Math}
-\begin{frame}[fragile]{Age Distribution}
-\begin{align*}
-  \exp(i\theta) = \cos(\theta) + i \sin(\theta)
-\end{align*}
+% Method Comparison %
+\section{Comparison with other methods}
+
+
+% R Part %
+<< include = FALSE >>=
+# -- Installing destiny package -- # 
+# if (!requireNamespace("BiocManager", quietly = TRUE))
+#     install.packages("BiocManager")
+# BiocManager::install("destiny", version = "3.8")
+@
+\section{R Demonstration}
+\begin{frame}[fragile]{\texttt{destiny} Package}
+<< fig.height = 5, fig.width = 10 >>=
+library(destiny)
+data(guo)
+dm_guo <- DiffusionMap(guo, verbose = FALSE, censor_range = c(15, 40), censor_val = 15)
+plot(dm_guo)
+@
 \end{frame}
