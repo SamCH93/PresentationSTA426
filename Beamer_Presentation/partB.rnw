@@ -1,20 +1,174 @@
-% Method Comparison %
-\section{Comparison with other methods}
-
-
 % R Part %
 << include = FALSE >>=
+library(tidyverse)
+library(gridExtra)
+library(Biobase)
 # -- Installing destiny package -- # 
 # if (!requireNamespace("BiocManager", quietly = TRUE))
 #     install.packages("BiocManager")
 # BiocManager::install("destiny", version = "3.8")
 @
+
+% Method Comparison %
+\section{Comparison with Other Methods}
+
+\begin{frame}{Dimension Reduction Methods for Single-Cell Omics Data}
+% Goal: Find a low-dimensional representation of the data
+
+\begin{block}{Principal Component Analysis (PCA)}
+  \begin{itemize}
+    \item Orthogonal transformation of the data
+    \item Works best for linear data subspace
+    \item Non-linear extensions (Kernel-PCA)
+  \end{itemize}
+\end{block}
+
+\pause
+
+\begin{block}{t-Distributed Stochastic Neighbor Embedding (t-SNE)}
+  \begin{itemize}
+    \item Probabilistic, non-linear method
+    \item Very robust to noise / density heterogenities
+    \item Tuning parameter perplexity
+  \end{itemize}
+\end{block}
+
+Many more methods exist!
+
+\end{frame}
+
+
+\begin{frame}{Simulated Data -- Balanced}
+\begin{center}
+  \includegraphics[width = 11.5cm]{img/simulatedData.png}
+  \includegraphics[width = 4cm]{img/simDataModel.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{Simulated Data -- Imbalanced}
+\begin{center}
+  \includegraphics[width = 11.5cm]{img/ImbalancedSimulatedData.png}
+  \includegraphics[width = 4cm]{img/simDataModelImbalance.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{qPCR Data -- Haematopoietic Stem Cells}
+\begin{center}
+  \includegraphics[width = 11.5cm]{img/qPCR1.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{qPCR Data -- Mouse Embryonic Stem Cells}
+\includegraphics[width = 11.5cm]{img/qPCR2.png}
+\end{frame}
+
+\begin{frame}{Results}
+  \begin{itemize}
+    \item[+] Diffusion maps outperform other methods in finding cell differentiation trajectories
+    \item[+] Diffusion maps are robust to sampling density heterogenities and noise
+    \pause
+    \vspace{0.2cm}
+    \item[-] In all examples $\sigma^2$ was finetuned
+    \item[-] Unclear if finetuning perplexity paramter in $t$-SNE method leads to similar results
+    \item[-] Number of diffusion components needed for visualization not known in advance
+  \end{itemize}
+\end{frame}
+
+
 \section{R Demonstration}
 \begin{frame}[fragile]{\texttt{destiny} Package}
 << fig.height = 5, fig.width = 10 >>=
+set.seed(12)
 library(destiny)
 data(guo)
-dm_guo <- DiffusionMap(guo, verbose = FALSE, censor_range = c(15, 40), censor_val = 15)
-plot(dm_guo)
+dm_guo <- DiffusionMap(guo)
+plot(dm_guo, pch = 20, col_by = "num_cells", legend_main = "Cell Stage")
 @
+\end{frame}
+
+
+\begin{frame}[fragile]{Eigenvalues of Diffusion Components}
+<< fig.height = 5, fig.width = 10, echo = FALSE >>=
+plot(eigenvalues(dm_guo), xlab = "Diffusion Component (DC)", ylab = "Eigenvalue",
+     pch = 20, col = "darkblue", type = "b")
+@
+\end{frame}
+
+\begin{frame}[fragile]{Plotting Several Diffusion Components}
+<< fig.height = 5, fig.width = 10, echo = FALSE >>=
+par(mfrow = c(1, 2))
+plot(dm_guo, 1:3, pch = 20, draw_legend = FALSE)
+plot(dm_guo, c(1, 2, 4), pch = 20, draw_legend = FALSE)
+@
+\end{frame}
+
+\begin{frame}[fragile]{Choice of $\sigma^2$}
+<< fig.height = 5, fig.width = 10 >>=
+sigmas <- find_sigmas(guo, verbose = FALSE)
+optimal_sigma(sigmas)
+@
+<< fig.height = 5, fig.width = 10, echo = FALSE >>=
+opt <- optimal_sigma(sigmas)
+plota <- fortify(DiffusionMap(guo, 2)) %>% 
+    mutate(Embryo_State = factor(num_cells)) %>% 
+    ggplot(aes(DC1, DC2, color = Embryo_State)) +
+    geom_point() + 
+    guides(color = FALSE) +
+    labs(title = bquote(sigma == 2)) +
+    theme_bw()
+
+plotb <- fortify(DiffusionMap(guo, opt)) %>% 
+    mutate(Embryo_State = factor(num_cells)) %>% 
+    ggplot(aes(DC1, DC2, color = Embryo_State)) +
+    geom_point() + 
+    guides(color = FALSE) +
+    labs(title = bquote(sigma == .(round(opt, 2)))) +
+    theme_bw()
+
+plotc <- fortify(DiffusionMap(guo, 20)) %>% 
+    mutate(Embryo_State = factor(num_cells)) %>% 
+    ggplot(aes(DC1, DC2, color = Embryo_State)) +
+    geom_point() + 
+    guides(color = FALSE) +
+    labs(title = bquote(sigma == 20)) +
+    theme_bw()
+
+grid.arrange(plota, plotb, plotc, ncol = 3)
+@
+\end{frame}
+
+\begin{frame}[fragile]{Censored/Missing Values}
+<< fig.height = 5, fig.width = 10 >>=
+guo_missing <- guo 
+exprs(guo_missing)[sample(length(exprs(guo_missing)), 100)] <- NA
+dm_guo_missing <- DiffusionMap(guo_missing, verbose = FALSE,
+                               censor_val = 15, censor_range = c(15, 40),
+                               missing_range = c(-5, 10))
+plot(dm_guo_missing, pch = 20, col_by = "num_cells", legend_main = "Cell Stage")
+@
+\end{frame}
+
+
+
+% \begin{frame}[fragile]{\texttt{destiny} Package}
+<< fig.height = 5, fig.width = 10, echo = FALSE >>=
+#plot(gene_relevance(dm_guo))
+@
+% \end{frame}
+
+\begin{frame}{Discussion}
+  \begin{itemize}
+    \item [+] Handle high noise levels, missing data, sampling heterogenitites
+    \item [+] Diffusion distance is a biologically relevant distance metric
+    \item [+] Capture nonlinear/complex differentiation dynamics
+    
+    \pause
+    \vspace{0.2cm}
+    \item [-] Number of significant dimension not determinable in advance
+    \item [-] Finetuning of $\sigma^2$ required (but there is a proposed criterion)
+    \item [-] $n^2 \times G$ computation time (but there are approximate versions)
+  \end{itemize}
+
+\pause
+  $\rightarrow$ Powerful dimension reduction tool for single cell differentiation data
 \end{frame}

@@ -23,8 +23,6 @@ opts_chunk$set(fig.align = "center",
 
 \maketitle
 
-
-
 % First Part %
 << partA, child = 'partA.rnw' >>=
 @
@@ -36,7 +34,7 @@ opts_chunk$set(fig.align = "center",
 % References %
 \begin{frame}{References}
   \bibliographystyle{apa}
-  \nocite{Angerer2015, Haghverdi2015}
+  \nocite{Angerer2015, Haghverdi2015, Coifman2006}
   \bibliography{biblio.bib}
 \end{frame}
 
