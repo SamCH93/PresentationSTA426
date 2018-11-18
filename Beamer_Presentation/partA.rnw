@@ -1,73 +1,47 @@
 
-\begin{frame}{Overview}
-- Motivation
-- Statistical model
-- Comparison and evaluation
-\end{frame}
 
-\begin{frame}{Introduction}
-Diffusion maps: A dimensionality reduction tool for non-linear data.
+\section{Motivation}
 
-What is non-linear data?
-\end{frame}
-
-% \begin{frame}{Introducing example}
-% Toy model:
-% 
-% Differentiation by 3 regulatory genes and "toggle switch" mechanism.
-% \end{frame}
-
-\begin{frame}{Toy model}
-\begin{figure}
-\centering
-  \includegraphics[width=0.5\linewidth]{Toymodel.png}
-\end{figure}
-First low baseline expression
-
-One gene starts to inhibit the other with equal probability -> Branching.
-\end{frame}
-
-\begin{frame}{Biological Background}
-Single cell gene expression heterogeneity and sampling error - noise.
+% elaborate on single cell variability and talk about the setup: an RNA-seq sample from a single population at a single time.
+\begin{frame}{Single cell variability and differentiation}
+Intrinsic variability between cells and measurement error - noise.
 
 Differential expression of genes steering differentiation - signal.
 
-Measurements of RNA expression profiles from large numbers of cells at different developmental stages.
+% Need to think about differentiation and how it is reflected in gene expression
+Continuous vs. abrupt, switch like gene expression change.
 \end{frame}
 
-% \begin{frame}{Cell differentiation}
-% This heterogeneity among cells is also present between differentiating cells.
-% 
-% However, differentiating cells are also different with respect to where on the
-% differentiation trajectory they lie. So we expect not clear clusters, but rather branches.
-% \end{frame}
 
-\begin{frame}{Aim of the paper}
-Establishment a pseudo-temporal order of the cells. % that reflects the hidden differentiation ordering
+\begin{frame}{Questions}
+Which genes change in their expression due to differentiation?
 
-\begin{figure}
-\centering
-  \includegraphics[width=0.5\linewidth]{Toymodel2.png}
-\end{figure}
+Given a single cell, what is it's developmental stage?
+
+-> Retrieve the hidden temporal ordering of cells.
 \end{frame}
 
+% So practically, what we want to do
+\begin{frame}{Setup}
+RNA-seq measurements from a cell population at one or multiple time points.
+
+Visualize differentiation by aligning the cells along the differentiation trajectories.
+\end{frame}
+
+
+\section{Statistical Model}
 \begin{frame}{Notation}
 Let $n$ be the number of all cells and $G$ the number of all genes measured.
 
 $\mathbf{x}$ is the position of the cell in the multi-dimensional space $\mathbb{R}^{G}$
-\end{frame}
 
-\begin{frame}{Core of the model}
 Isotropic gaussian wave function:
 
 \begin{figure}
 \centering
   \includegraphics[width=0.5\linewidth]{Gaussianwave.png}
 \end{figure}
-
-And markov chain transition probability matrix $P$ (ergodic for large enough $\sigma$).
 \end{frame}
-%The t'th power of P will then define a random walk (diffusion) process of length n
 
 
 \begin{frame}{Markov chain transition probability matrix}
@@ -90,45 +64,46 @@ $\left( \begin{array}{cc} 0.3 & 0.7 \\ 0.2 & 0.8 \end{array} \right)$
 \end{figure}
 
 \vspace{10mm}
-\end{frame}
 
+Transition probability:
+% Show here the intersection function between two gaussian wave functions 
+\end{frame}
+% Add that the diagonal is set to 0 and the t.ps have to be normalised
+% The t'th power of P will then define a random walk (diffusion) process of length n
 
 \begin{frame}{Diffusion}
 Diffusion distance: euclidian distance in the eigenvector space.
 
 Diffusion coefficients: eigenvalues in the direction of their corresponding eigenvectors
+
+Assumption: Eigenvalues drop to a noise level after the first $l$ components.
 \end{frame}
 
-\begin{frame}{Dimensionality Reduction}
-Eigenvalues drop to a noise level after the first $l$ components.
-
-Approximation of the diffusion distance.
-\end{frame}
 
 \begin{frame}{Summary}
-When each cell is allowed to "diffuse" randomly;
+Similarly to the random fluctuation in real cells, we allow the cells to diffuse in $\mathbb{R}^{G}$
 
-We can compute the probability that it will "diffuse" into another cell.
-
-And show the direction in which most "diffusion" happens.
+Output: Main 'diffusion' directions.
 \end{frame}
 
+% More practical aspects
 \begin{frame}{Missing Values}
-Replace the Gaussi of a missing Gene g' with a prior representing
-our assumption of the distribution of the missing gene.
+% Include Gaussian Wave
+
+Decompose the kernel of the gaussian wave into $G$ components.
+
+Replace missing values with hypothetical distribution.
 
 Choice of a gaussian distribution may be preferred over uniform distribution due to computational reasons.
 \end{frame}
 
 \begin{frame}{Determination of the Gaussian Kernel Width}
-$Z(x)$ partition function approximating the number of cells into which the cell $x$ can diffuse.
+% Include Interference Function - s too big, no sensitivity, s too small, no ergodicity
 
-Assume:
-\centering
-\begin{figure}
-  \includegraphics[width=0.25\linewidth]{Dim_sigma.png}
-\end{figure}
+The average dimensionality of the manifold is equal to 
 
+%Insert formula
+
+When the average dimensionality decreases after a maximum, 
 \end{frame}
-
 
