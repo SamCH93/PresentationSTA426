@@ -23,6 +23,10 @@ opts_chunk$set(fig.align = "center",
 
 \maketitle
 
+\begin{frame}{Table of Contents}
+  \tableofcontents
+\end{frame}
+
 % First Part %
 << partA, child = 'partA.rnw' >>=
 @

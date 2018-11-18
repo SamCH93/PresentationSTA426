@@ -25,7 +25,7 @@ library(Biobase)
 
 \pause
 
-\begin{block}{t-Distributed Stochastic Neighbor Embedding (t-SNE)}
+\begin{block}{t-distributed Stochastic Neighbor Embedding (t-SNE)}
   \begin{itemize}
     \item Probabilistic, non-linear method
     \item Very robust to noise / density heterogenities
@@ -167,6 +167,8 @@ plot(dm_guo_missing, pch = 20, cex.symbols = 1.5, col_by = "num_cells", legend_m
 #plot(gene_relevance(dm_guo))
 @
 % \end{frame}
+
+\section{Conclusions}
 
 \begin{frame}{Discussion}
   \begin{itemize}
