@@ -7,7 +7,7 @@
 \usetheme{metropolis}
 
 \title{STA 426: Diffusion maps for high-dimensional single-cell analysis of differentiation data}
-\author{Giuachin Kreiliger, Samuel Pawel}
+\author{Giuachin Kreiliger, Samuel Pawel (GitHub: Kreile, SamCH93)}
 \date{19.11.2018}
 
 \begin{document}
