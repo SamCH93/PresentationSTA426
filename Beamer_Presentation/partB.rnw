@@ -45,7 +45,7 @@ Many more methods exist!
 \end{center}
 \end{frame}
 
-\begin{frame}{Simulated Data -- Imbalanced}
+\begin{frame}{Simulated Data -- Imbalanced + Noise}
 \begin{center}
   \includegraphics[width = 11.5cm]{img/ImbalancedSimulatedData.png}
   \includegraphics[width = 4cm]{img/simDataModelImbalance.png}
@@ -69,7 +69,7 @@ Many more methods exist!
     \pause
     \vspace{0.2cm}
     \item[-] In all examples $\sigma^2$ was finetuned
-    \item[-] Unclear if finetuning perplexity paramter in $t$-SNE method leads to similar results
+    \item[-] Unclear if finetuning perplexity parameter in $t$-SNE method would lead to similar results
     \item[-] Number of diffusion components needed for visualization not known in advance
   \end{itemize}
 \end{frame}
@@ -77,25 +77,25 @@ Many more methods exist!
 
 \section{R Demonstration}
 \begin{frame}[fragile]{\texttt{destiny} Package}
-<< fig.height = 5, fig.width = 10 >>=
+<< fig.height = 6, fig.width = 10 >>=
 set.seed(12)
 library(destiny)
-data(guo)
-dm_guo <- DiffusionMap(guo)
+data("guo_norm")
+dm_guo <- DiffusionMap(guo_norm)
 plot(dm_guo, pch = 20, col_by = "num_cells", legend_main = "Cell Stage")
 @
 \end{frame}
 
 
 \begin{frame}[fragile]{Eigenvalues of Diffusion Components}
-<< fig.height = 5, fig.width = 10, echo = FALSE >>=
+<< fig.height = 5.5, fig.width = 10 >>=
 plot(eigenvalues(dm_guo), xlab = "Diffusion Component (DC)", ylab = "Eigenvalue",
-     pch = 20, col = "darkblue", type = "b")
+     pch = 20, col = "darkblue", type = "b", cex = 2)
 @
 \end{frame}
 
 \begin{frame}[fragile]{Plotting Several Diffusion Components}
-<< fig.height = 5, fig.width = 10, echo = FALSE >>=
+<< fig.height = 6, fig.width = 10>>=
 par(mfrow = c(1, 2))
 plot(dm_guo, 1:3, pch = 20, draw_legend = FALSE)
 plot(dm_guo, c(1, 2, 4), pch = 20, draw_legend = FALSE)
@@ -103,48 +103,61 @@ plot(dm_guo, c(1, 2, 4), pch = 20, draw_legend = FALSE)
 \end{frame}
 
 \begin{frame}[fragile]{Choice of $\sigma^2$}
-<< fig.height = 5, fig.width = 10 >>=
-sigmas <- find_sigmas(guo, verbose = FALSE)
+<< fig.height = 5.5, fig.width = 10 >>=
+sigmas <- find_sigmas(guo_norm, verbose = FALSE)
 optimal_sigma(sigmas)
 @
-<< fig.height = 5, fig.width = 10, echo = FALSE >>=
+<< fig.height = 5.5, fig.width = 10, echo = FALSE >>=
 opt <- optimal_sigma(sigmas)
-plota <- fortify(DiffusionMap(guo, 2)) %>% 
+plota <- fortify(DiffusionMap(guo_norm, 2)) %>% 
     mutate(Embryo_State = factor(num_cells)) %>% 
     ggplot(aes(DC1, DC2, color = Embryo_State)) +
     geom_point() + 
     guides(color = FALSE) +
     labs(title = bquote(sigma == 2)) +
-    theme_bw()
+    theme_bw() +
+    theme(axis.ticks = element_blank(), axis.text.y = element_blank(), 
+          axis.text.x = element_blank())
 
-plotb <- fortify(DiffusionMap(guo, opt)) %>% 
+plotb <- fortify(DiffusionMap(guo_norm, opt)) %>% 
     mutate(Embryo_State = factor(num_cells)) %>% 
     ggplot(aes(DC1, DC2, color = Embryo_State)) +
     geom_point() + 
     guides(color = FALSE) +
     labs(title = bquote(sigma == .(round(opt, 2)))) +
-    theme_bw()
+    theme_bw() +
+    theme(axis.ticks = element_blank(), axis.text.y = element_blank(), 
+          axis.text.x = element_blank())
 
-plotc <- fortify(DiffusionMap(guo, 20)) %>% 
+plotc <- fortify(DiffusionMap(guo_norm, 20)) %>% 
     mutate(Embryo_State = factor(num_cells)) %>% 
     ggplot(aes(DC1, DC2, color = Embryo_State)) +
     geom_point() + 
     guides(color = FALSE) +
     labs(title = bquote(sigma == 20)) +
-    theme_bw()
+    theme_bw() +
+    theme(axis.ticks = element_blank(), axis.text.y = element_blank(), 
+          axis.text.x = element_blank())
 
 grid.arrange(plota, plotb, plotc, ncol = 3)
 @
 \end{frame}
 
+<< include = FALSE >>=
+set.seed(12)
+guo_missing <- guo_norm
+@
+
 \begin{frame}[fragile]{Censored/Missing Values}
 << fig.height = 5, fig.width = 10 >>=
-guo_missing <- guo 
+layout(matrix(c(1, 2, 2), ncol = 3))
 exprs(guo_missing)[sample(length(exprs(guo_missing)), 100)] <- NA
 dm_guo_missing <- DiffusionMap(guo_missing, verbose = FALSE,
-                               censor_val = 15, censor_range = c(15, 40),
+                               censor_val = 14, censor_range = c(10, 40),
                                missing_range = c(-5, 10))
-plot(dm_guo_missing, pch = 20, col_by = "num_cells", legend_main = "Cell Stage")
+hist(exprs(guo_norm), main = "Limit of Detection", xlab = "Ct", col = "skyblue", border = "white")
+abline(v = 14, lty = 2)
+plot(dm_guo_missing, pch = 20, cex.symbols = 1.5, col_by = "num_cells", legend_main = "Cell Stage")
 @
 \end{frame}
 
