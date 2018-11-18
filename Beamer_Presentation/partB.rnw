@@ -86,21 +86,20 @@ plot(dm_guo, pch = 20, col_by = "num_cells", legend_main = "Cell Stage")
 @
 \end{frame}
 
-
-\begin{frame}[fragile]{Eigenvalues of Diffusion Components}
-<< fig.height = 5.5, fig.width = 10 >>=
-plot(eigenvalues(dm_guo), xlab = "Diffusion Component (DC)", ylab = "Eigenvalue",
-     pch = 20, col = "darkblue", type = "b", cex = 2)
+% \begin{frame}[fragile]{Eigenvalues of Diffusion Components}
+<< fig.height = 5.5, fig.width = 10, echo = FALSE >>=
+# plot(eigenvalues(dm_guo), xlab = "Diffusion Component (DC)", ylab = "Eigenvalue",
+#      pch = 20, col = "darkblue", type = "b", cex = 2)
 @
-\end{frame}
+% \end{frame}
 
-\begin{frame}[fragile]{Plotting Several Diffusion Components}
-<< fig.height = 6, fig.width = 10>>=
-par(mfrow = c(1, 2))
-plot(dm_guo, 1:3, pch = 20, draw_legend = FALSE)
-plot(dm_guo, c(1, 2, 4), pch = 20, draw_legend = FALSE)
+% \begin{frame}[fragile]{Plotting Several Diffusion Components}
+<< fig.height = 6, fig.width = 10, echo = FALSE>>=
+# par(mfrow = c(1, 2))
+# plot(dm_guo, 1:3, pch = 20, draw_legend = FALSE, col_by = "num_cells")
+# plot(dm_guo, c(1, 2, 4), pch = 20, draw_legend = FALSE, col_by = "num_cells")
 @
-\end{frame}
+% \end{frame}
 
 \begin{frame}[fragile]{Choice of $\sigma^2$}
 << fig.height = 5.5, fig.width = 10 >>=
