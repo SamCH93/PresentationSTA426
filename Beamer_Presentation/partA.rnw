@@ -1,8 +1,134 @@
-% Introduction %
-\section{Introduction}
+
+\begin{frame}{Overview}
+- Motivation
+- Statistical model
+- Comparison and evaluation
+\end{frame}
+
+\begin{frame}{Introduction}
+Diffusion maps: A dimensionality reduction tool for non-linear data.
+
+What is non-linear data?
+\end{frame}
+
+% \begin{frame}{Introducing example}
+% Toy model:
+% 
+% Differentiation by 3 regulatory genes and "toggle switch" mechanism.
+% \end{frame}
+
+\begin{frame}{Toy model}
+\begin{figure}
+\centering
+  \includegraphics[width=0.5\linewidth]{Toymodel.png}
+\end{figure}
+First low baseline expression
+
+One gene starts to inhibit the other with equal probability -> Branching.
+\end{frame}
+
+\begin{frame}{Biological Background}
+Single cell gene expression heterogeneity and sampling error - noise.
+
+Differential expression of genes steering differentiation - signal.
+
+Measurements of RNA expression profiles from large numbers of cells at different developmental stages.
+\end{frame}
+
+% \begin{frame}{Cell differentiation}
+% This heterogeneity among cells is also present between differentiating cells.
+% 
+% However, differentiating cells are also different with respect to where on the
+% differentiation trajectory they lie. So we expect not clear clusters, but rather branches.
+% \end{frame}
+
+\begin{frame}{Aim of the paper}
+Establishment a pseudo-temporal order of the cells. % that reflects the hidden differentiation ordering
+
+\begin{figure}
+\centering
+  \includegraphics[width=0.5\linewidth]{Toymodel2.png}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Notation}
+Let $n$ be the number of all cells and $G$ the number of all genes measured.
+
+$\mathbf{x}$ is the position of the cell in the multi-dimensional space $\mathbb{R}^{G}$
+\end{frame}
+
+\begin{frame}{Core of the model}
+Isotropic gaussian wave function:
+
+\begin{figure}
+\centering
+  \includegraphics[width=0.5\linewidth]{Gaussianwave.png}
+\end{figure}
+
+And markov chain transition probability matrix $P$ (ergodic for large enough $\sigma$).
+\end{frame}
+%The t'th power of P will then define a random walk (diffusion) process of length n
 
 
+\begin{frame}{Markov chain transition probability matrix}
+Two state markov chain:
+\vspace{5mm}
 
-% Technical Details %
-\section{Technical Details}
+$\left( \begin{array}{cc} 0 & 1 \\ 1 & 0 \end{array} \right)$
+\hspace{1 cm}
+\vspace{-1.6cm}
+\begin{figure}
+  \includegraphics[width=0.25\linewidth]{MC1.png}
+\end{figure}
+
+\vspace{5mm}
+$\left( \begin{array}{cc} 0.3 & 0.7 \\ 0.2 & 0.8 \end{array} \right)$
+\hspace{1 cm}
+\vspace{-1.6cm}
+\begin{figure}
+  \includegraphics[width=0.34\linewidth]{MC2.png}
+\end{figure}
+
+\vspace{10mm}
+\end{frame}
+
+
+\begin{frame}{Diffusion}
+Diffusion distance: euclidian distance in the eigenvector space.
+
+Diffusion coefficients: eigenvalues in the direction of their corresponding eigenvectors
+\end{frame}
+
+\begin{frame}{Dimensionality Reduction}
+Eigenvalues drop to a noise level after the first $l$ components.
+
+Approximation of the diffusion distance.
+\end{frame}
+
+\begin{frame}{Summary}
+When each cell is allowed to "diffuse" randomly;
+
+We can compute the probability that it will "diffuse" into another cell.
+
+And show the direction in which most "diffusion" happens.
+\end{frame}
+
+\begin{frame}{Missing Values}
+Replace the Gaussi of a missing Gene g' with a prior representing
+our assumption of the distribution of the missing gene.
+
+Choice of a gaussian distribution may be preferred over uniform distribution due to computational reasons.
+\end{frame}
+
+\begin{frame}{Determination of the Gaussian Kernel Width}
+$Z(x)$ partition function approximating the number of cells into which the cell $x$ can diffuse.
+
+Assume:
+\centering
+\begin{figure}
+  \includegraphics[width=0.25\linewidth]{Dim_sigma.png}
+\end{figure}
+
+\end{frame}
+
 
