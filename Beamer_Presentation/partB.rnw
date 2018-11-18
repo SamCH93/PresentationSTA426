@@ -58,9 +58,9 @@ Many more methods exist!
 \end{center}
 \end{frame}
 
-\begin{frame}{qPCR Data -- Mouse Embryonic Stem Cells}
-\includegraphics[width = 11.5cm]{img/qPCR2.png}
-\end{frame}
+% \begin{frame}{qPCR Data -- Mouse Embryonic Stem Cells}
+% \includegraphics[width = 11.5cm]{img/qPCR2.png}
+% \end{frame}
 
 \begin{frame}{Results}
   \begin{itemize}
