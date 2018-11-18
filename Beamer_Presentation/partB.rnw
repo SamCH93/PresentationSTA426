@@ -144,7 +144,7 @@ grid.arrange(plota, plotb, plotc, ncol = 3)
 \end{frame}
 
 << include = FALSE >>=
-set.seed(12)
+set.seed(13)
 guo_missing <- guo_norm
 @
 
@@ -153,7 +153,7 @@ guo_missing <- guo_norm
 layout(matrix(c(1, 2, 2), ncol = 3))
 exprs(guo_missing)[sample(length(exprs(guo_missing)), 100)] <- NA
 dm_guo_missing <- DiffusionMap(guo_missing, verbose = FALSE,
-                               censor_val = 14, censor_range = c(10, 40),
+                               censor_val = 14, censor_range = c(14, 40),
                                missing_range = c(-5, 10))
 hist(exprs(guo_norm), main = "Limit of Detection", xlab = "Ct", col = "skyblue", border = "white")
 abline(v = 14, lty = 2)
