@@ -1,31 +1,49 @@
+  \documentclass{beamer}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage[utf8]{inputenc}
+\usepackage{natbib}
+\renewcommand{\bibsection}{}
+\usetheme{metropolis}
 
+\title{STA 426: Diffusion maps for high-dimensional single-cell analysis of differentiation data}
+\author{Giuachin Kreiliger, Samuel Pawel (GitHub: Kreile, SamCH93)}
+\date{19.11.2018}
+
+\begin{document}
 
 \section{Motivation}
 
 % elaborate on single cell variability and talk about the setup: an RNA-seq sample from a single population at a single time.
-\begin{frame}{Single cell variability and differentiation}
-Intrinsic variability between cells and measurement error - noise.
+\begin{frame}{Single Cell Variability and Differentiation}
+\begin{itemize}
+\item Intrinsic variability between cells and measurement error - noise.
 
-Differential expression of genes steering differentiation - signal.
+\item Differential expression of genes steering differentiation - signal.
 
 % Need to think about differentiation and how it is reflected in gene expression
-Continuous vs. abrupt, switch like gene expression change.
+\item Continuous vs. abrupt, switch like gene expression change.
+\end{itemize}
 \end{frame}
 
 
 \begin{frame}{Questions}
-Which genes change in their expression due to differentiation?
+\begin{itemize}
+\item Which genes change in their expression due to differentiation?
 
-Given a single cell, what is it's developmental stage?
+\item Given a single cell, what is it's developmental stage?
+\end{itemize}
 
--> Retrieve the hidden temporal ordering of cells.
+$\rightarrow$ Retrieve the hidden temporal ordering of cells.
 \end{frame}
 
 % So practically, what we want to do
 \begin{frame}{Setup}
-RNA-seq measurements from a cell population at one or multiple time points.
+\begin{itemize}
+\item RNA-seq measurements from a cell population at one or multiple time points.
 
-Visualize differentiation by aligning the cells along the differentiation trajectories.
+\item Visualize differentiation by aligning the cells along the differentiation trajectories.
+\end{itemize}
 \end{frame}
 
 
@@ -37,14 +55,14 @@ $\mathbf{x}$ is the position of the cell in the multi-dimensional space $\mathbb
 
 Isotropic gaussian wave function:
 
-\begin{figure}
-\centering
-  \includegraphics[width=0.5\linewidth]{Gaussianwave.png}
-\end{figure}
+\begin{align*}
+ \mathbf{Y}_\mathbf{x}(\mathbf{x}') = (\frac{2}{\pi \sigma^2})^{1/4}    \exp(-\frac{||\mathbf{x}'-\mathbf{x}||^2}{\sigma^2})
+\end{align*}
+
 \end{frame}
 
 
-\begin{frame}{Markov chain transition probability matrix}
+\begin{frame}{Markov Chain Transition Probability Matrix}
 Two state markov chain:
 \vspace{5mm}
 
@@ -64,19 +82,32 @@ $\left( \begin{array}{cc} 0.3 & 0.7 \\ 0.2 & 0.8 \end{array} \right)$
 \end{figure}
 
 \vspace{10mm}
+\end{frame}
 
+\begin{frame}{Diffusion Transition Probability Matrix}
 Transition probability:
-% Show here the intersection function between two gaussian wave functions 
+
+\begin{align}
+\int_{-\infty}^{\infty} \mathbf{Y}_\mathbf{x}(\mathbf{x}') \mathbf{Y}_\mathbf{y}(\mathbf{x}')
+ d \mathbf{x}' = \exp(-\frac{||\mathbf{y}-\mathbf{x}||^2}{\sigma^2})  
+\end{align}
+
+\begin{align}
+P_{xy} = \frac{1}{Z(\mathbf{x})} \exp(-\frac{||\mathbf{y}-\mathbf{x}||^2}{2\sigma^2}), \\
+ \text{where} ~ Z(\mathbf{x}) = \sum_{i = 1}^G \exp(-\frac{||\mathbf{y_i}-\mathbf{x}||^2}{2\sigma^2}) 
+\end{align}
 \end{frame}
 % Add that the diagonal is set to 0 and the t.ps have to be normalised
 % The t'th power of P will then define a random walk (diffusion) process of length n
 
 \begin{frame}{Diffusion}
-Diffusion distance: euclidian distance in the eigenvector space.
+\begin{itemize}
+\item Diffusion distance: euclidian distance in the eigenvector space.
 
-Diffusion coefficients: eigenvalues in the direction of their corresponding eigenvectors
+\item Diffusion coefficients: eigenvalues in the direction of their corresponding eigenvectors
 
-Assumption: Eigenvalues drop to a noise level after the first $l$ components.
+\item Assumption: Eigenvalues drop to a noise level after the first $l$ components.
+\end{itemize}
 \end{frame}
 
 
@@ -89,12 +120,13 @@ Output: Main 'diffusion' directions.
 % More practical aspects
 \begin{frame}{Missing Values}
 % Include Gaussian Wave
+\begin{itemize}
+\item Decompose the kernel of the gaussian wave into $G$ components.
 
-Decompose the kernel of the gaussian wave into $G$ components.
+\item Replace missing values with hypothetical distribution.
 
-Replace missing values with hypothetical distribution.
-
-Choice of a gaussian distribution may be preferred over uniform distribution due to computational reasons.
+\item Choice of a gaussian distribution may be preferred over uniform distribution due to computational reasons.
+\end{itemize}
 \end{frame}
 
 \begin{frame}{Determination of the Gaussian Kernel Width}
@@ -102,8 +134,11 @@ Choice of a gaussian distribution may be preferred over uniform distribution due
 
 The average dimensionality of the manifold is equal to 
 
-%Insert formula
+\begin{align*}
+ \langle d(\sigma)\rangle_x = \frac{\partial \langle\log(Z(\mathbf{x}))\rangle_x}{\partial \log(\sigma)}
+\end{align*}
 
 When the average dimensionality decreases after a maximum, 
 \end{frame}
 
+\end{document}
