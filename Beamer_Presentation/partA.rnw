@@ -84,11 +84,12 @@ $\left( \begin{array}{cc} 0.3 & 0.7 \\ 0.2 & 0.8 \end{array} \right)$
 
 \begin{frame}{Diffusion Maps -- Quantities}
 \begin{itemize}
-\item \alert{Diffusion distance}: Euclidian distance in the eigenvector space.
 
-\item \alert{Diffusion coefficients}: Eigenvalues in the direction of their corresponding eigenvectors
+\item \alert{Diffusion components}
 
-\item Assumption: Eigenvalues drop to a noise level after the first few components
+\item \alert{Diffusion coefficients}
+
+\item Assumption: Diffusion coefficients drop to a noise level after the first few components
 \end{itemize}
 \end{frame}
 
