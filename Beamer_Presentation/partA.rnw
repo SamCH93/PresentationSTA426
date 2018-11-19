@@ -112,10 +112,10 @@ $\left( \begin{array}{cc} 0.3 & 0.7 \\ 0.2 & 0.8 \end{array} \right)$
 
 \item The average dimensionality of the manifold is equal to 
 \begin{align*}
- \langle d(\sigma)\rangle_x = \frac{\partial \langle\log(Z(\mathbf{x}))\rangle_x}{\partial \log(\sigma)}
+ \mathbb{E}_x [d(\sigma)] = \frac{\partial \mathbb{E}_x [\log(Z(\mathbf{x}))]}{\partial \log(\sigma)}
 \end{align*}
 
-\item Choose $\sigma$ such that $d(\sigma)\rangle_x$ is maximized
+\item Choose $\sigma$ such that $\mathbb{E}_x [d(\sigma)]$ is maximized
 
 \item Possibly multiple maxima
 
